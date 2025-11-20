@@ -1,0 +1,1 @@
+“Django Task Manager is a web app to add, edit, and delete daily tasks. Built with Django and Bootstrap 5, it stores tasks in a database and provides a clean, responsive interface to manage your to-do list efficiently.
