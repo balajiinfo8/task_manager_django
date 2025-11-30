@@ -23,15 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-hielcdwx11)p^q(9=bj=s0y1%21$7-m)*nx__&r654x&sc=n8y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [
-    "task-manager-django-c2fh.onrender.com",
-    "localhost",
-    "127.0.0.1"
-]
+# ALLOWED_HOSTS = [
+#     "task-manager-django-c2fh.onrender.com",
+#     "localhost",
+#     "127.0.0.1"
+# ]
 
-
+ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [

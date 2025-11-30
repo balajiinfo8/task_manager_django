@@ -5,7 +5,24 @@ from .forms import TodoForm
 from .models import Todo
 from django.shortcuts import get_object_or_404
 # login required
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required 
+from django.contrib.auth import authenticate , login 
+
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('todo')  # redirect to /home/
+        else:
+            messages.error(request, "Invalid username and password")
+
+    # Always render login page (for GET or failed POST)
+    return render(request, 'todo/login.html')
+
 
 @login_required
 def index(request,item_id=None):
