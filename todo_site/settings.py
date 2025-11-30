@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -31,7 +31,7 @@ DEBUG = True
 #     "127.0.0.1"
 # ]
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['task-manager-django-iqs0.onrender.com','*']
 # Application definition
 
 INSTALLED_APPS = [
@@ -141,7 +141,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CRISPY_FORM , CRISPY_BOOTRAP5 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False  # default; keep False unless you handle headers in JS
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
 
 # LOGIN REDIRECT 
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "/"
+
+
+CSRF_TRUSTED_ORIGINS = [
+     "https://task-manager-django-iqs0.onrender.com",
+]
+
+
+
+# enviromental variable 
+
+DEBUG = os.getenv("DEBUG", "False") == "True"
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "task-manager-django-iqs0.onrender.com").split(",")
+
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "CSRF_TRUSTED_ORIGINS",
+    "https://task-manager-django-iqs0.onrender.com"
+).split(",")
