@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-hielcdwx11)p^q(9=bj=s0y1%21$7-m)*nx__&r654x&sc=n8y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["task-manager-django-yxbt.onrender.com"]
 
 
 # Application definition
