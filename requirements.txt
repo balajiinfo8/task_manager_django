@@ -109,3 +109,7 @@ watchdog==6.0.0
 wheel==0.45.1
 whitenoise==6.11.0
 gunicorn>=21.2.0
+<<<<<<< HEAD
+=======
+
+>>>>>>> 751aaa91edd4788ded2b9c7ced9c62fd1b77b972
