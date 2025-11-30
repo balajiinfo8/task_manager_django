@@ -30,10 +30,6 @@ DEBUG = True
 #     "localhost",
 #     "127.0.0.1"
 # ]
-<<<<<<< HEAD
-=======
-ALLOWED_HOSTS = ['*']
->>>>>>> 751aaa91edd4788ded2b9c7ced9c62fd1b77b972
 
 ALLOWED_HOSTS = ['*']
 # Application definition

@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 # login required
 from django.contrib.auth.decorators import login_required 
 from django.contrib.auth import authenticate , login 
-
+from django.contrib.auth import logout
 
 def login_view(request):
     if request.method == "POST":
@@ -54,3 +54,7 @@ def remove(request,item_id):
     item.delete()
     messages.info(request,"Item Removed...!")
     return redirect('todo')
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')  # Redirect to login page after logout
