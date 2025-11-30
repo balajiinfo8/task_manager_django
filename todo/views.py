@@ -4,7 +4,10 @@ from django.contrib import messages
 from .forms import TodoForm
 from .models import Todo
 from django.shortcuts import get_object_or_404
+# login required
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def index(request,item_id=None):
     item_list = Todo.objects.order_by('-date')
     if item_id:
@@ -29,7 +32,6 @@ def index(request,item_id=None):
     }
     return render(request,'todo/index.html',pages)
 
-    return redirect('todo')
 def remove(request,item_id):
     item = Todo.objects.get(id=item_id)
     item.delete()

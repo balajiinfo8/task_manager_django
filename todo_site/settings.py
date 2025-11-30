@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'todo',
-    'crispy_forms' # Style the Forms Easily using Bootstrap or other css framework 
+    'rest_framework',
+    "rest_framework_simplejwt", # jwt
+    'crispy_forms', # crispy , Style the Forms Easily using Bootstrap or other css framework 
+    'crispy_bootstrap5' 
 ]
 
 MIDDLEWARE = [
@@ -50,6 +53,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# REST FRAMEWORK SETTING 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES' : (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 ROOT_URLCONF = 'todo_site.urls'
 
@@ -122,3 +132,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# CRISPY_FORM , CRISPY_BOOTRAP5 
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# LOGIN REDIRECT 
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "/"
