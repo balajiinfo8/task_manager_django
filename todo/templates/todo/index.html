@@ -51,6 +51,16 @@
             border-radius: 20px;
             border-color:  #3B3B3B;
         }
+        @media(min-width: 992px){
+            .card:hover {
+                transform: translateY(-5);
+            }
+        }
+        @media(max-width:768px){
+            .card{
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 
@@ -81,7 +91,7 @@
 
         <div class="row">
             <!-- Task List -->
-            <div class="col-md-8">
+            <div class="col-12 col-md-8">
                 {% if list %}
                     {% for i in list %}
                         <div class="card">
@@ -110,7 +120,7 @@
             </div>
 
             <!-- Submit Form -->
-            <div class="col-md-4">
+            <div class="col-12 col-md-4">
                 <div class="submit_form">
                     <h4 class="text-center text-success mb-3">Add a New Task</h4>
                     <form method="POST">
