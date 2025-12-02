@@ -1,4 +1,3 @@
-# 🔗 https://task-manager-django-iqs0.onrender.com/
 # ✅ Django Task Manager with JWT Authentication
 
 **Django Task Manager** is a web application to add, edit, and delete daily tasks.  
