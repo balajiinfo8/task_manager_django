@@ -92,6 +92,6 @@ python manage.py runserver
 Backend Engineer (Python | FastAPI | Real-Time Systems)
 
 * GitHub: https://github.com/balajiinfo8
-* LinkedIn: https://linkedin.com/in/vjbalaji-00283a18a
+* LinkedIn: https://www.linkedin.com/in/balaji-vinothkumar/
 
 ---
