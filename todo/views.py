@@ -1,60 +1,106 @@
-from django.shortcuts import render , redirect
+
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-# Create your views here.
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.views.decorators.http import require_POST
+
 from .forms import TodoForm
 from .models import Todo
-from django.shortcuts import get_object_or_404
-# login required
-from django.contrib.auth.decorators import login_required 
-from django.contrib.auth import authenticate , login 
-from django.contrib.auth import logout
+
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect("todo")
+
     if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password,
+        )
+
         if user is not None:
             login(request, user)
-            return redirect('todo')  # redirect to /home/
-        else:
-            messages.error(request, "Invalid username and password")
+            return redirect("todo")
 
-    # Always render login page (for GET or failed POST)
-    return render(request, 'todo/login.html')
+        messages.error(request, "Invalid username or password.")
+
+    return render(request, "todo/login.html")
+
+
+def register(request):
+    if request.user.is_authenticated:
+        return redirect("todo")
+
+    form = UserCreationForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Account created. Please log in.")
+        return redirect("login")
+
+    return render(request, "todo/register.html", {"form": form})
 
 
 @login_required
-def index(request,item_id=None):
-    item_list = Todo.objects.order_by('-date')
-    if item_id:
-        task = get_object_or_404(Todo,id=item_id)
+def index(request, item_id=None):
+    # Only show tasks belonging to the logged-in user.
+    item_list = Todo.objects.filter(owner=request.user).order_by("-date")
+
+    if item_id is not None:
+        task = get_object_or_404(
+            Todo,
+            id=item_id,
+            owner=request.user,
+        )
         form = TodoForm(request.POST or None, instance=task)
-        if request.method == 'POST' and form.is_valid():
-            form.save()
-            messages.success(request,"Item Updated")
-            return redirect('todo')
+
+        if request.method == "POST" and form.is_valid():
+            task = form.save(commit=False)
+            task.owner = request.user
+            task.save()
+            messages.success(request, "Item updated.")
+            return redirect("todo")
+
     else:
         form = TodoForm(request.POST or None)
-        if request.method == 'POST' and form.is_valid():
-            form.save()
-            messages.success(request,"Item Added!")
-            return redirect('todo')
+
+        if request.method == "POST" and form.is_valid():
+            task = form.save(commit=False)
+            task.owner = request.user
+            task.save()
+            messages.success(request, "Item added.")
+            return redirect("todo")
 
     pages = {
-        "forms" : form,
-        "list":item_list,
-        "title":"TODO ITEM",
-        'editing' : item_id
+        "forms": form,
+        "list": item_list,
+        "title": "TODO ITEM",
+        "editing": item_id,
     }
-    return render(request,'todo/index.html',pages)
 
-def remove(request,item_id):
-    item = Todo.objects.get(id=item_id)
-    item.delete()
-    messages.info(request,"Item Removed...!")
-    return redirect('todo')
+    return render(request, "todo/index.html", pages)
 
+
+@login_required
+@require_POST
+def remove(request, item_id):
+    task = get_object_or_404(
+        Todo,
+        id=item_id,
+        owner=request.user,
+    )
+    task.delete()
+    messages.info(request, "Item removed.")
+    return redirect("todo")
+
+
+@login_required
 def logout_view(request):
     logout(request)
-    return redirect('login')  # Redirect to login page after logout
+    return redirect("login")
