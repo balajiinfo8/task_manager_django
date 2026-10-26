@@ -3,10 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.views.decorators.http import require_POST
-
-from .forms import TodoForm
+from django.contrib.auth import get_user_model
+from .forms import TodoForm , RegistrationForm
 from .models import Todo
 
 
@@ -15,20 +14,31 @@ def login_view(request):
         return redirect("todo")
 
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        identifier = request.POST.get("username","").strip()
+        password = request.POST.get("password","")
+
+        User = get_user_model()
+
+        account = User.objects.filter(
+            email__iexact=identifier
+        ).first()
+
+        username = account.username if account else identifier
 
         user = authenticate(
             request,
-            username=username,
-            password=password,
+            username = username,
+            password =  password,
         )
 
         if user is not None:
-            login(request, user)
+            login(request,user)
             return redirect("todo")
+        messages.error(
+            request,
+            "Invalid username/email or password."
+        )
 
-        messages.error(request, "Invalid username or password.")
 
     return render(request, "todo/login.html")
 
@@ -37,7 +47,7 @@ def register(request):
     if request.user.is_authenticated:
         return redirect("todo")
 
-    form = UserCreationForm(request.POST or None)
+    form = RegistrationForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
         form.save()
