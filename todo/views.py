@@ -51,7 +51,7 @@ def register(request):
 
     if request.method == "POST" and form.is_valid():
         form.save()
-        messages.success(request, "Account created. Please log in.")
+        messages.success(request, "Your account has been created successfully!")
         return redirect("login")
 
     return render(request, "todo/register.html", {"form": form})

@@ -17,7 +17,6 @@
 
         .card {
             width: 100%;
-            max-width: 400px;
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -31,32 +30,44 @@
             font-size: 16px;
             box-sizing : border-box;
         }
-        .notes  h1 {
-            /* made visible when it in mobile format  */
-            font-size: 16px;   
-            margin: 5px 0 ;
-            font-weight: normal;
-            margin-top: 15px;
+        form input 
+        {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
         }
-        @media(max-width:768px){
-            .card {
-                padding: 15px;
-            }
-            .notes h1 {
-                font-size: 22px;
-            }
+        /* dark mode and light mode  */
+        body.dark-mode {
+            background-color: #121212;
+            color: #f1f1f1;
         }
-        @media(max-width:480px){
-            .card{padding: 16px;}
-            .notes h1{
-                font-size: 12px;
-            }        
+        .dark-mode .card{
+            background-color: #1e1e1e;
+            color: #f1f1f1;
+        }
+
+        .dark-mode input {
+            background-color: #2b2b2b;
+            color: white;
+            border-color: #555;
+        }
+        .dark-mode input::placeholder
+        {
+            color: #bbb;
         }
     </style>
 </head>
 <body>
     <div class="card p-4 w-100" style="max-width: 400px;">
         <h1>Login</h1>
+
+        <button type="button" id="themeToggle"
+            class="btn btn-outline-secoundry mb-3">
+            🌙 Dark
+        </button>
 
         <!-- show error if wrong  -->
        {% if messages %}
@@ -68,10 +79,10 @@
             {% endfor %}
         {% endif %}
 
-        <form method="POST" style="height: 150px;">
+        <form method="POST">
             {% csrf_token %}
-            <input type="text" name="username" placeholder="Username or email address" required><br>
-            <input type="password" name="password" placeholder="Password" required><br>
+            <input type="text" name="username" placeholder="Username or email address" required>
+            <input type="password" name="password" placeholder="Password" required>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
 
@@ -79,13 +90,23 @@
             Don't have an account?
             <a href="{% url 'register' %}">Register here</a>
         </p>
-
-         <div class="notes">
-        <h1>UserName : Enter Your Username </h1>
-        <h1>password : Enter Your Password</h1>
-        </div>
     </div>
-
    
+    <script>
+        // call the html element 
+        const themeToggle = document.getElementById("themeToggle");
+        const body = document.body;
+
+        themeToggle.addEventListener("click" , function() {
+            body.classList.toggle("dark-mode");
+
+            if(body.classList.contains("dark-mode")){
+                themeToggle.textContent = "🌞 Light Mode";
+            }
+            else{
+                themeToggle.textContent = "🌛 Dark-Mode";
+            }
+        })
+    </script>
 </body>
 </html>
