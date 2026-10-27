@@ -90,7 +90,7 @@ def index(request, item_id=None):
     pages = {
         "forms": form,
         "list": item_list,
-        "title": "TODO ITEM",
+        "title": "TaskForge",
         "editing": item_id,
     }
 
